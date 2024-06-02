@@ -2,12 +2,12 @@ from django.db import models
 
 # Create your models here.
 class Category(models.Model):
-    name = models.TextField(max_length=250)
+    name = models.CharField()
     place = models.TextField(auto_created=250)
 
 class Kitob(models.Model):
     image = models.FileField(upload_to="%id_%m_%Y/")
-    name = models.TextField(max_length=250)
+    name = models.CharField(max_length=250)
     category = models.ForeignKey(
         Category,
         on_delete=models.CASCADE
@@ -27,8 +27,8 @@ class Rent(models.Model):
     return_time = models.TimeField()
     
 class Customer(models.Model):
-    Last_name = models.TextField()
-    First_name = models.TextField()
+    last_name = models.CharField()
+    lirst_name = models.CharField()
     location = models.TextField()
     card_number_Seria = models.BigIntegerField()
 

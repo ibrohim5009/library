@@ -169,7 +169,7 @@
         "kind": 6,
         "importPath": "app.models",
         "description": "app.models",
-        "peekOfCode": "class Category(models.Model):\n    name = models.TextField(max_length=250)\n    place = models.TextField(auto_created=250)\nclass Kitob(models.Model):\n    image = models.FileField(upload_to=\"%id_%m_%Y/\")\n    name = models.TextField(max_length=250)\n    category = models.ForeignKey(\n        Category,\n        on_delete=models.CASCADE\n    )",
+        "peekOfCode": "class Category(models.Model):\n    name = models.CharField()\n    place = models.TextField(auto_created=250)\nclass Kitob(models.Model):\n    image = models.FileField(upload_to=\"%id_%m_%Y/\")\n    name = models.CharField(max_length=250)\n    category = models.ForeignKey(\n        Category,\n        on_delete=models.CASCADE\n    )",
         "detail": "app.models",
         "documentation": {}
     },
@@ -178,7 +178,7 @@
         "kind": 6,
         "importPath": "app.models",
         "description": "app.models",
-        "peekOfCode": "class Kitob(models.Model):\n    image = models.FileField(upload_to=\"%id_%m_%Y/\")\n    name = models.TextField(max_length=250)\n    category = models.ForeignKey(\n        Category,\n        on_delete=models.CASCADE\n    )\n    place = models.TextField(auto_created=250)\n    amount = models.BigIntegerField()\n    rent_price = models.FloatField()",
+        "peekOfCode": "class Kitob(models.Model):\n    image = models.FileField(upload_to=\"%id_%m_%Y/\")\n    name = models.CharField(max_length=250)\n    category = models.ForeignKey(\n        Category,\n        on_delete=models.CASCADE\n    )\n    place = models.TextField(auto_created=250)\n    amount = models.BigIntegerField()\n    rent_price = models.FloatField()",
         "detail": "app.models",
         "documentation": {}
     },
@@ -187,7 +187,7 @@
         "kind": 6,
         "importPath": "app.models",
         "description": "app.models",
-        "peekOfCode": "class Rent(models.Model):\n    kitob = models.ForeignKey(\n        Kitob,\n        on_delete=models.CASCADE\n    )\n    customer = models.BigIntegerField()\n    amount = models.BigIntegerField()\n    return_time = models.TimeField()\nclass Customer(models.Model):\n    Last_name = models.TextField()",
+        "peekOfCode": "class Rent(models.Model):\n    kitob = models.ForeignKey(\n        Kitob,\n        on_delete=models.CASCADE\n    )\n    customer = models.BigIntegerField()\n    amount = models.BigIntegerField()\n    return_time = models.TimeField()\nclass Customer(models.Model):\n    last_name = models.CharField()",
         "detail": "app.models",
         "documentation": {}
     },
@@ -196,7 +196,7 @@
         "kind": 6,
         "importPath": "app.models",
         "description": "app.models",
-        "peekOfCode": "class Customer(models.Model):\n    Last_name = models.TextField()\n    First_name = models.TextField()\n    location = models.TextField()\n    card_number_Seria = models.BigIntegerField()",
+        "peekOfCode": "class Customer(models.Model):\n    last_name = models.CharField()\n    lirst_name = models.CharField()\n    location = models.TextField()\n    card_number_Seria = models.BigIntegerField()",
         "detail": "app.models",
         "documentation": {}
     },
