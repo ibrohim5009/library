@@ -14,7 +14,7 @@ class BookViewSet(viewsets.ModelViewSet):
     
     @action(methods=["GET"],detail=False)
     def search(self,request,*args,**kwargs):
-        query=request.GET.get("query")
+        query=request.GET.get("query","")
         queryset = self.filter_queryset(self.get_queryset())
         queryset=queryset.filter(name__icontains=query)
 
