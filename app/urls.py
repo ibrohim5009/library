@@ -7,4 +7,4 @@ router.register("books", BookViewSet)
 router.register("rents", RentViewSet)
 router.register("customers", CustomerViewSet)
 
-urlpatterns = router.urls
+urlpatterns=router.urls
