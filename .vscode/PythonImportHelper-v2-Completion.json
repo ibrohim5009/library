@@ -138,6 +138,22 @@
         "documentation": {}
     },
     {
+        "label": "Response",
+        "importPath": "rest_framework.response",
+        "description": "rest_framework.response",
+        "isExtraImport": true,
+        "detail": "rest_framework.response",
+        "documentation": {}
+    },
+    {
+        "label": "action",
+        "importPath": "rest_framework.decorators",
+        "description": "rest_framework.decorators",
+        "isExtraImport": true,
+        "detail": "rest_framework.decorators",
+        "documentation": {}
+    },
+    {
         "label": "os",
         "kind": 6,
         "isExtraImport": true,
@@ -341,16 +357,7 @@
         "kind": 5,
         "importPath": "app.urls",
         "description": "app.urls",
-        "peekOfCode": "router = DefaultRouter()\nrouter.register(\"categories\", CategoryViewSet)\nrouter.register(\"books\", BookViewSet)\nrouter.register(\"rents\", RentViewSet)\nrouter.register(\"customers\", CustomerViewSet)\nurlpatterns = router.urls",
-        "detail": "app.urls",
-        "documentation": {}
-    },
-    {
-        "label": "urlpatterns",
-        "kind": 5,
-        "importPath": "app.urls",
-        "description": "app.urls",
-        "peekOfCode": "urlpatterns = router.urls",
+        "peekOfCode": "router = DefaultRouter()\nrouter.register(\"categories\", CategoryViewSet)\nrouter.register(\"books\", BookViewSet)\nrouter.register(\"rents\", RentViewSet)\nrouter.register(\"customers\", CustomerViewSet)\nurlpatterns=router.urls",
         "detail": "app.urls",
         "documentation": {}
     },
@@ -359,7 +366,7 @@
         "kind": 6,
         "importPath": "app.views",
         "description": "app.views",
-        "peekOfCode": "class CategoryViewSet(viewsets.ModelViewSet):\n    queryset = Category.objects.all()\n    serializer_class = CategorySerializer\nclass BookViewSet(viewsets.ModelViewSet):\n    queryset = Book.objects.all()\n    serializer_class = BookSerializer\nclass CustomerViewSet(viewsets.ModelViewSet):\n    queryset = Customer.objects.all()\n    serializer_class = CustomerSerializer\nclass RentViewSet(viewsets.ModelViewSet):",
+        "peekOfCode": "class CategoryViewSet(viewsets.ModelViewSet):\n    queryset = Category.objects.all()\n    serializer_class = CategorySerializer\n    @action(methods=[\"GET\"],detail=False)\n    def search(self,request,*args,**kwargs):\n        query=request.GET.get(\"query\")\n        queryset = self.filter_queryset(self.get_queryset())\n        queryset=queryset.filter(name__icontains=query)\n        page = self.paginate_queryset(queryset)\n        if page is not None:",
         "detail": "app.views",
         "documentation": {}
     },
@@ -368,7 +375,7 @@
         "kind": 6,
         "importPath": "app.views",
         "description": "app.views",
-        "peekOfCode": "class BookViewSet(viewsets.ModelViewSet):\n    queryset = Book.objects.all()\n    serializer_class = BookSerializer\nclass CustomerViewSet(viewsets.ModelViewSet):\n    queryset = Customer.objects.all()\n    serializer_class = CustomerSerializer\nclass RentViewSet(viewsets.ModelViewSet):\n    queryset = Rent.objects.all()\n    serializer_class = RentSerializer\nclass EmptyDataView(APIView):",
+        "peekOfCode": "class BookViewSet(viewsets.ModelViewSet):\n    queryset = Book.objects.all()\n    serializer_class = BookSerializer\n    @action(methods=[\"GET\"],detail=False)\n    def search(self,request,*args,**kwargs):\n        query=request.GET.get(\"query\")\n        queryset = self.filter_queryset(self.get_queryset())\n        queryset=queryset.filter(name__icontains=query)\n        page = self.paginate_queryset(queryset)\n        if page is not None:",
         "detail": "app.views",
         "documentation": {}
     },
