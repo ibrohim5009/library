@@ -98,11 +98,43 @@
         "documentation": {}
     },
     {
+        "label": "status",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
         "label": "TestCase",
         "importPath": "django.test",
         "description": "django.test",
         "isExtraImport": true,
         "detail": "django.test",
+        "documentation": {}
+    },
+    {
+        "label": "DefaultRouter",
+        "importPath": "rest_framework.routers",
+        "description": "rest_framework.routers",
+        "isExtraImport": true,
+        "detail": "rest_framework.routers",
+        "documentation": {}
+    },
+    {
+        "label": "APIView",
+        "importPath": "rest_framework.views",
+        "description": "rest_framework.views",
+        "isExtraImport": true,
+        "detail": "rest_framework.views",
+        "documentation": {}
+    },
+    {
+        "label": "Response",
+        "importPath": "rest_framework.response",
+        "description": "rest_framework.response",
+        "isExtraImport": true,
+        "detail": "rest_framework.response",
         "documentation": {}
     },
     {
@@ -273,16 +305,16 @@
         "kind": 6,
         "importPath": "app.serializers",
         "description": "app.serializers",
-        "peekOfCode": "class CategorySerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Category\n        fields = '__all__'\nclass KitobSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Kitob\n        fields = '__all__'\nclass CustomerSerializer(serializers.ModelSerializer):\n    class Meta:",
+        "peekOfCode": "class CategorySerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Category\n        fields = '__all__'\nclass BookSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Book\n        fields = '__all__'\n    def __init__(self, *args, **kwargs):\n        super(BookSerializer, self).__init__(*args, **kwargs)",
         "detail": "app.serializers",
         "documentation": {}
     },
     {
-        "label": "KitobSerializer",
+        "label": "BookSerializer",
         "kind": 6,
         "importPath": "app.serializers",
         "description": "app.serializers",
-        "peekOfCode": "class KitobSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Kitob\n        fields = '__all__'\nclass CustomerSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Customer\n        fields = '__all__'\nclass RentSerializer(serializers.ModelSerializer):\n    class Meta:",
+        "peekOfCode": "class BookSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Book\n        fields = '__all__'\n    def __init__(self, *args, **kwargs):\n        super(BookSerializer, self).__init__(*args, **kwargs)\n        request=self.context.get(\"request\")\n        if request and request.method == \"GET\":\n            category=request.GET.get('category')=='true'\n            if category:",
         "detail": "app.serializers",
         "documentation": {}
     },
@@ -291,7 +323,7 @@
         "kind": 6,
         "importPath": "app.serializers",
         "description": "app.serializers",
-        "peekOfCode": "class CustomerSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Customer\n        fields = '__all__'\nclass RentSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Rent\n        fields = '__all__'",
+        "peekOfCode": "class CustomerSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Customer\n        fields = '__all__'\nclass RentSerializer(serializers.ModelSerializer):\n    def __init__(self, *args, **kwargs):\n        super(RentSerializer, self).__init__(*args, **kwargs)\n        request = self.context.get(\"request\")\n        if request and request.method == \"GET\":\n            book = request.GET.get('book') == 'true'",
         "detail": "app.serializers",
         "documentation": {}
     },
@@ -300,8 +332,26 @@
         "kind": 6,
         "importPath": "app.serializers",
         "description": "app.serializers",
-        "peekOfCode": "class RentSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Rent\n        fields = '__all__'",
+        "peekOfCode": "class RentSerializer(serializers.ModelSerializer):\n    def __init__(self, *args, **kwargs):\n        super(RentSerializer, self).__init__(*args, **kwargs)\n        request = self.context.get(\"request\")\n        if request and request.method == \"GET\":\n            book = request.GET.get('book') == 'true'\n            if book:\n                self.fields[\"book\"] = BookSerializer(context=self.context)\n            customer = request.GET.get('customer') == 'true'\n            if customer:",
         "detail": "app.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "router",
+        "kind": 5,
+        "importPath": "app.urls",
+        "description": "app.urls",
+        "peekOfCode": "router = DefaultRouter()\nrouter.register(\"categories\", CategoryViewSet)\nrouter.register(\"books\", BookViewSet)\nrouter.register(\"rents\", RentViewSet)\nrouter.register(\"customers\", CustomerViewSet)\nurlpatterns = router.urls",
+        "detail": "app.urls",
+        "documentation": {}
+    },
+    {
+        "label": "urlpatterns",
+        "kind": 5,
+        "importPath": "app.urls",
+        "description": "app.urls",
+        "peekOfCode": "urlpatterns = router.urls",
+        "detail": "app.urls",
         "documentation": {}
     },
     {
@@ -309,16 +359,16 @@
         "kind": 6,
         "importPath": "app.views",
         "description": "app.views",
-        "peekOfCode": "class CategoryViewSet(viewsets.ModelViewSet):\n    queryset = Category.objects.all()\n    serializer_class = CategorySerializer\nclass KitobViewSet(viewsets.ModelViewSet):\n    queryset = Kitob.objects.all()\n    serializer_class = KitobSerializer\nclass CustomerViewSet(viewsets.ModelViewSet):\n    queryset = Customer.objects.all()\n    serializer_class = CustomerSerializer\nclass RentViewSet(viewsets.ModelViewSet):",
+        "peekOfCode": "class CategoryViewSet(viewsets.ModelViewSet):\n    queryset = Category.objects.all()\n    serializer_class = CategorySerializer\nclass BookViewSet(viewsets.ModelViewSet):\n    queryset = Book.objects.all()\n    serializer_class = BookSerializer\nclass CustomerViewSet(viewsets.ModelViewSet):\n    queryset = Customer.objects.all()\n    serializer_class = CustomerSerializer\nclass RentViewSet(viewsets.ModelViewSet):",
         "detail": "app.views",
         "documentation": {}
     },
     {
-        "label": "KitobViewSet",
+        "label": "BookViewSet",
         "kind": 6,
         "importPath": "app.views",
         "description": "app.views",
-        "peekOfCode": "class KitobViewSet(viewsets.ModelViewSet):\n    queryset = Kitob.objects.all()\n    serializer_class = KitobSerializer\nclass CustomerViewSet(viewsets.ModelViewSet):\n    queryset = Customer.objects.all()\n    serializer_class = CustomerSerializer\nclass RentViewSet(viewsets.ModelViewSet):\n    queryset = Rent.objects.all()\n    serializer_class = RentSerializer",
+        "peekOfCode": "class BookViewSet(viewsets.ModelViewSet):\n    queryset = Book.objects.all()\n    serializer_class = BookSerializer\nclass CustomerViewSet(viewsets.ModelViewSet):\n    queryset = Customer.objects.all()\n    serializer_class = CustomerSerializer\nclass RentViewSet(viewsets.ModelViewSet):\n    queryset = Rent.objects.all()\n    serializer_class = RentSerializer\nclass EmptyDataView(APIView):",
         "detail": "app.views",
         "documentation": {}
     },
@@ -327,7 +377,7 @@
         "kind": 6,
         "importPath": "app.views",
         "description": "app.views",
-        "peekOfCode": "class CustomerViewSet(viewsets.ModelViewSet):\n    queryset = Customer.objects.all()\n    serializer_class = CustomerSerializer\nclass RentViewSet(viewsets.ModelViewSet):\n    queryset = Rent.objects.all()\n    serializer_class = RentSerializer",
+        "peekOfCode": "class CustomerViewSet(viewsets.ModelViewSet):\n    queryset = Customer.objects.all()\n    serializer_class = CustomerSerializer\nclass RentViewSet(viewsets.ModelViewSet):\n    queryset = Rent.objects.all()\n    serializer_class = RentSerializer\nclass EmptyDataView(APIView):\n    def get(self, request, *args, **kwargs):\n        return Response({\"data\": []}, status=status.HTTP_200_OK)\nclass EmptyPostDataView(APIView):",
         "detail": "app.views",
         "documentation": {}
     },
@@ -336,7 +386,25 @@
         "kind": 6,
         "importPath": "app.views",
         "description": "app.views",
-        "peekOfCode": "class RentViewSet(viewsets.ModelViewSet):\n    queryset = Rent.objects.all()\n    serializer_class = RentSerializer",
+        "peekOfCode": "class RentViewSet(viewsets.ModelViewSet):\n    queryset = Rent.objects.all()\n    serializer_class = RentSerializer\nclass EmptyDataView(APIView):\n    def get(self, request, *args, **kwargs):\n        return Response({\"data\": []}, status=status.HTTP_200_OK)\nclass EmptyPostDataView(APIView):\n    def get(self, request, *args, **kwargs):\n        return Response(status=status.HTTP_201_CREATED)",
+        "detail": "app.views",
+        "documentation": {}
+    },
+    {
+        "label": "EmptyDataView",
+        "kind": 6,
+        "importPath": "app.views",
+        "description": "app.views",
+        "peekOfCode": "class EmptyDataView(APIView):\n    def get(self, request, *args, **kwargs):\n        return Response({\"data\": []}, status=status.HTTP_200_OK)\nclass EmptyPostDataView(APIView):\n    def get(self, request, *args, **kwargs):\n        return Response(status=status.HTTP_201_CREATED)",
+        "detail": "app.views",
+        "documentation": {}
+    },
+    {
+        "label": "EmptyPostDataView",
+        "kind": 6,
+        "importPath": "app.views",
+        "description": "app.views",
+        "peekOfCode": "class EmptyPostDataView(APIView):\n    def get(self, request, *args, **kwargs):\n        return Response(status=status.HTTP_201_CREATED)",
         "detail": "app.views",
         "documentation": {}
     },

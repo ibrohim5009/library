@@ -76,3 +76,4 @@ class Rent(TimeStampModel):
 
     def __str__(self) -> str:
         return f"{self.customer.first_name}-{self.book.name}-{self.return_time}"
+    
