@@ -98,19 +98,35 @@
         "documentation": {}
     },
     {
-        "label": "status",
-        "importPath": "rest_framework",
-        "description": "rest_framework",
-        "isExtraImport": true,
-        "detail": "rest_framework",
-        "documentation": {}
-    },
-    {
         "label": "TestCase",
         "importPath": "django.test",
         "description": "django.test",
         "isExtraImport": true,
         "detail": "django.test",
+        "documentation": {}
+    },
+    {
+        "label": "path",
+        "importPath": "django.urls",
+        "description": "django.urls",
+        "isExtraImport": true,
+        "detail": "django.urls",
+        "documentation": {}
+    },
+    {
+        "label": "path",
+        "importPath": "django.urls",
+        "description": "django.urls",
+        "isExtraImport": true,
+        "detail": "django.urls",
+        "documentation": {}
+    },
+    {
+        "label": "include",
+        "importPath": "django.urls",
+        "description": "django.urls",
+        "isExtraImport": true,
+        "detail": "django.urls",
         "documentation": {}
     },
     {
@@ -154,6 +170,14 @@
         "documentation": {}
     },
     {
+        "label": "get_object_or_404",
+        "importPath": "django.shortcuts",
+        "description": "django.shortcuts",
+        "isExtraImport": true,
+        "detail": "django.shortcuts",
+        "documentation": {}
+    },
+    {
         "label": "os",
         "kind": 6,
         "isExtraImport": true,
@@ -184,22 +208,6 @@
         "description": "pathlib",
         "isExtraImport": true,
         "detail": "pathlib",
-        "documentation": {}
-    },
-    {
-        "label": "path",
-        "importPath": "django.urls",
-        "description": "django.urls",
-        "isExtraImport": true,
-        "detail": "django.urls",
-        "documentation": {}
-    },
-    {
-        "label": "include",
-        "importPath": "django.urls",
-        "description": "django.urls",
-        "isExtraImport": true,
-        "detail": "django.urls",
         "documentation": {}
     },
     {
@@ -357,8 +365,35 @@
         "kind": 5,
         "importPath": "app.urls",
         "description": "app.urls",
-        "peekOfCode": "router = DefaultRouter()\nrouter.register(\"categories\", CategoryViewSet)\nrouter.register(\"books\", BookViewSet)\nrouter.register(\"rents\", RentViewSet)\nrouter.register(\"customers\", CustomerViewSet)\nurlpatterns=router.urls",
+        "peekOfCode": "router = DefaultRouter()\nrouter.register(\"categories\", CategoryViewSet)\nrouter.register(\"books\", BookViewSet)\nrouter.register(\"rents\", RentViewSet)\nrouter.register(\"customers\", CustomerViewSet)\nurlpatterns = [\n    path(\"my-categories/\",CategoryQuerySetApiView.as_view())\n]\nurlpatterns+=router.urls\n# Steps urls",
         "detail": "app.urls",
+        "documentation": {}
+    },
+    {
+        "label": "urlpatterns",
+        "kind": 5,
+        "importPath": "app.urls",
+        "description": "app.urls",
+        "peekOfCode": "urlpatterns = [\n    path(\"my-categories/\",CategoryQuerySetApiView.as_view())\n]\nurlpatterns+=router.urls\n# Steps urls\n# 1-query-set view my-path/\n# 2-detail view my-path/<int:pk>/",
+        "detail": "app.urls",
+        "documentation": {}
+    },
+    {
+        "label": "CategoryQuerySetApiView",
+        "kind": 6,
+        "importPath": "app.views",
+        "description": "app.views",
+        "peekOfCode": "class CategoryQuerySetApiView(APIView):\n    def post(self,request,*args,**kwargs):\n        data=request.data\n        category=Category.objects.create(name=data[\"name\"],place=data[\"place\"])\n        serializer=CategorySerializer(category,many=False,context={\"request\":request})\n        return Response(serializer.data,status=status.HTTP_201_CREATED)\nclass CategoryDetailApiView(APIView):\n    def get(self,request,pk,*args,**kwargs):\n        instance=get_object_or_404(Category,pk=pk)\n        serializer=CategorySerializer(instance,many=False,context={\"request\":request})",
+        "detail": "app.views",
+        "documentation": {}
+    },
+    {
+        "label": "CategoryDetailApiView",
+        "kind": 6,
+        "importPath": "app.views",
+        "description": "app.views",
+        "peekOfCode": "class CategoryDetailApiView(APIView):\n    def get(self,request,pk,*args,**kwargs):\n        instance=get_object_or_404(Category,pk=pk)\n        serializer=CategorySerializer(instance,many=False,context={\"request\":request})\n        return Response(serializer.data)\n    def delete(self,request,pk,*args,**kwargs):\n        return Response({})\n# class CategoryQuerySetApiView(APIView):\n#     def get(self,request,*args,**kwargs):\n#         queryset=Category.objects.all()",
+        "detail": "app.views",
         "documentation": {}
     },
     {
@@ -375,7 +410,7 @@
         "kind": 6,
         "importPath": "app.views",
         "description": "app.views",
-        "peekOfCode": "class BookViewSet(viewsets.ModelViewSet):\n    queryset = Book.objects.all()\n    serializer_class = BookSerializer\n    @action(methods=[\"GET\"],detail=False)\n    def search(self,request,*args,**kwargs):\n        query=request.GET.get(\"query\")\n        queryset = self.filter_queryset(self.get_queryset())\n        queryset=queryset.filter(name__icontains=query)\n        page = self.paginate_queryset(queryset)\n        if page is not None:",
+        "peekOfCode": "class BookViewSet(viewsets.ModelViewSet):\n    queryset = Book.objects.all()\n    serializer_class = BookSerializer\n    @action(methods=[\"GET\"],detail=False)\n    def search(self,request,*args,**kwargs):\n        query=request.GET.get(\"query\",\"\")\n        queryset = self.filter_queryset(self.get_queryset())\n        queryset=queryset.filter(name__icontains=query)\n        page = self.paginate_queryset(queryset)\n        if page is not None:",
         "detail": "app.views",
         "documentation": {}
     },
@@ -384,7 +419,7 @@
         "kind": 6,
         "importPath": "app.views",
         "description": "app.views",
-        "peekOfCode": "class CustomerViewSet(viewsets.ModelViewSet):\n    queryset = Customer.objects.all()\n    serializer_class = CustomerSerializer\nclass RentViewSet(viewsets.ModelViewSet):\n    queryset = Rent.objects.all()\n    serializer_class = RentSerializer\nclass EmptyDataView(APIView):\n    def get(self, request, *args, **kwargs):\n        return Response({\"data\": []}, status=status.HTTP_200_OK)\nclass EmptyPostDataView(APIView):",
+        "peekOfCode": "class CustomerViewSet(viewsets.ModelViewSet):\n    queryset = Customer.objects.all()\n    serializer_class = CustomerSerializer\nclass RentViewSet(viewsets.ModelViewSet):\n    queryset = Rent.objects.all()\n    serializer_class = RentSerializer",
         "detail": "app.views",
         "documentation": {}
     },
@@ -393,25 +428,7 @@
         "kind": 6,
         "importPath": "app.views",
         "description": "app.views",
-        "peekOfCode": "class RentViewSet(viewsets.ModelViewSet):\n    queryset = Rent.objects.all()\n    serializer_class = RentSerializer\nclass EmptyDataView(APIView):\n    def get(self, request, *args, **kwargs):\n        return Response({\"data\": []}, status=status.HTTP_200_OK)\nclass EmptyPostDataView(APIView):\n    def get(self, request, *args, **kwargs):\n        return Response(status=status.HTTP_201_CREATED)",
-        "detail": "app.views",
-        "documentation": {}
-    },
-    {
-        "label": "EmptyDataView",
-        "kind": 6,
-        "importPath": "app.views",
-        "description": "app.views",
-        "peekOfCode": "class EmptyDataView(APIView):\n    def get(self, request, *args, **kwargs):\n        return Response({\"data\": []}, status=status.HTTP_200_OK)\nclass EmptyPostDataView(APIView):\n    def get(self, request, *args, **kwargs):\n        return Response(status=status.HTTP_201_CREATED)",
-        "detail": "app.views",
-        "documentation": {}
-    },
-    {
-        "label": "EmptyPostDataView",
-        "kind": 6,
-        "importPath": "app.views",
-        "description": "app.views",
-        "peekOfCode": "class EmptyPostDataView(APIView):\n    def get(self, request, *args, **kwargs):\n        return Response(status=status.HTTP_201_CREATED)",
+        "peekOfCode": "class RentViewSet(viewsets.ModelViewSet):\n    queryset = Rent.objects.all()\n    serializer_class = RentSerializer",
         "detail": "app.views",
         "documentation": {}
     },
@@ -465,7 +482,7 @@
         "kind": 5,
         "importPath": "project.settings",
         "description": "project.settings",
-        "peekOfCode": "INSTALLED_APPS = [\n    'django.contrib.admin',\n    'django.contrib.auth',\n    'django.contrib.contenttypes',\n    'django.contrib.sessions',\n    'django.contrib.messages',\n    'django.contrib.staticfiles',\n    'rest_framework',\n    'app'\n]",
+        "peekOfCode": "INSTALLED_APPS = [\n    'django.contrib.admin',\n    'django.contrib.auth',\n    'django.contrib.contenttypes',\n    'django.contrib.sessions',\n    'django.contrib.messages',\n    'django.contrib.staticfiles',\n    'rest_framework',\n    'app',\n    'corsheaders',",
         "detail": "project.settings",
         "documentation": {}
     },
@@ -474,7 +491,7 @@
         "kind": 5,
         "importPath": "project.settings",
         "description": "project.settings",
-        "peekOfCode": "MIDDLEWARE = [\n    'django.middleware.security.SecurityMiddleware',\n    'django.contrib.sessions.middleware.SessionMiddleware',\n    'django.middleware.common.CommonMiddleware',\n    'django.middleware.csrf.CsrfViewMiddleware',\n    'django.contrib.auth.middleware.AuthenticationMiddleware',\n    'django.contrib.messages.middleware.MessageMiddleware',\n    'django.middleware.clickjacking.XFrameOptionsMiddleware',\n]\nROOT_URLCONF = 'project.urls'",
+        "peekOfCode": "MIDDLEWARE = [\n    'django.middleware.security.SecurityMiddleware',\n    'django.contrib.sessions.middleware.SessionMiddleware',\n    'django.middleware.common.CommonMiddleware',\n    'django.middleware.csrf.CsrfViewMiddleware',\n    'django.contrib.auth.middleware.AuthenticationMiddleware',\n    'django.contrib.messages.middleware.MessageMiddleware',\n    'django.middleware.clickjacking.XFrameOptionsMiddleware',\n    'corsheaders.middleware.CorsMiddleware',\n    'django.middleware.common.CommonMiddleware',",
         "detail": "project.settings",
         "documentation": {}
     },
@@ -564,7 +581,7 @@
         "kind": 5,
         "importPath": "project.settings",
         "description": "project.settings",
-        "peekOfCode": "STATIC_URL = 'static/'\nSTATIC_ROOT=BASE_DIR/\"static\"\nMEDIA_URL = 'media/'\nMEDIA_ROOT=BASE_DIR/\"media\"\n# Default primary key field type\n# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'",
+        "peekOfCode": "STATIC_URL = 'static/'\nSTATIC_ROOT=BASE_DIR/\"static\"\nMEDIA_URL = 'media/'\nMEDIA_ROOT=BASE_DIR/\"media\"\n# Default primary key field type\n# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'\n# DEMO\nCORS_ALLOW_ALL_ORIGINS = True\n# Production",
         "detail": "project.settings",
         "documentation": {}
     },
@@ -573,7 +590,7 @@
         "kind": 5,
         "importPath": "project.settings",
         "description": "project.settings",
-        "peekOfCode": "MEDIA_URL = 'media/'\nMEDIA_ROOT=BASE_DIR/\"media\"\n# Default primary key field type\n# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'",
+        "peekOfCode": "MEDIA_URL = 'media/'\nMEDIA_ROOT=BASE_DIR/\"media\"\n# Default primary key field type\n# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'\n# DEMO\nCORS_ALLOW_ALL_ORIGINS = True\n# Production\n# CORS_ALLOWED_ORIGINS = [\n#     \"http://localhost:3000\"",
         "detail": "project.settings",
         "documentation": {}
     },
@@ -582,7 +599,16 @@
         "kind": 5,
         "importPath": "project.settings",
         "description": "project.settings",
-        "peekOfCode": "DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'",
+        "peekOfCode": "DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'\n# DEMO\nCORS_ALLOW_ALL_ORIGINS = True\n# Production\n# CORS_ALLOWED_ORIGINS = [\n#     \"http://localhost:3000\"\n# ]",
+        "detail": "project.settings",
+        "documentation": {}
+    },
+    {
+        "label": "CORS_ALLOW_ALL_ORIGINS",
+        "kind": 5,
+        "importPath": "project.settings",
+        "description": "project.settings",
+        "peekOfCode": "CORS_ALLOW_ALL_ORIGINS = True\n# Production\n# CORS_ALLOWED_ORIGINS = [\n#     \"http://localhost:3000\"\n# ]",
         "detail": "project.settings",
         "documentation": {}
     },
