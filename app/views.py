@@ -24,7 +24,7 @@ class CategoryQuerySetApiView(APIView):
         print(obj1)
         return Response({})
 
-class CategoryDetailApiView(A`PIView):
+class CategoryDetailApiView(APIView):
     def get(self,request,pk,*args,**kwargs):
         instance=get_object_or_404(Category,pk=pk)
         serializer=CategorySerializer(instance)
